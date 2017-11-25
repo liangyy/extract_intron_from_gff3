@@ -24,14 +24,14 @@ rule extraxt_exon:
     output:
         'exon/{name}__exon.bed.gz'
     shell:
-        'python scripts/grep_by_column.py {input]} 8 | gzip > {output[0]}'
+        'python scripts/grep_by_column.py {input[0]} 8 exon | gzip > {output[0]}'
 
 rule get_intron:
     input:
         'exon/{name}__exon.bed.gz'
     output:
         'intron/{name}__intron.bed.gz'
-    logs:
+    log:
         'logs/{name}__exon2intron.log'
     shell:
-        'python scripts/exon2intron.py --i_exon_bed {input[0]} --o_intron_bed {output[0]} > {logs[0]}'
+        'python scripts/exon2intron.py --i_exon_bed {input[0]} --o_intron_bed {output[0]} > {log}'
