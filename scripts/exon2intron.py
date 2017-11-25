@@ -62,12 +62,26 @@ for transcript in exon_dic.keys():
             elif exon[-1] <= len(exons.keys()):
                 if strand == '+':
                     end = exon[1]
+                    if int(start) >= int(end):
+                        print('skip {chrm} {transcript} {id1} - {id2} since the junction is not valid'.format(
+                            chrm = exon[0],
+                            transcript = transcript,
+                            id1 = exon_id - 1,
+                            id2 = exon_id))
+                        continue
                     o.write('\t'.join([exon[0], start, end,
                         transcript, '{id1}-{id2}'.format(id1 = exon_id - 1, id2 = exon_id), strand]) + '\n')
                     if exon[-1] < len(exons.keys()):
                         start = exon[2]
                 elif strand == '-':
                     end = exon[2]
+                    if int(start) >= int(end):
+                        print('skip {chrm} {transcript} {id1} - {id2} since the junction is not valid'.format(
+                            chrm = exon[0],
+                            transcript = transcript,
+                            id1 = exon_id - 1,
+                            id2 = exon_id))
+                        continue
                     o.write('\t'.join([exon[0], end, start,
                         transcript, '{id1}-{id2}'.format(id1 = exon_id - 1, id2 = exon_id), strand]) + '\n')
                     if exon[-1] < len(exons.keys()):
