@@ -75,7 +75,7 @@ for transcript in exon_dic.keys():
                         start = exon[2]
                 elif strand == '-':
                     end = exon[2]
-                    if int(start) >= int(end):
+                    if int(start) <= int(end):
                         print('skip {chrm} {transcript} {id1} - {id2} since the junction is not valid'.format(
                             chrm = exon[0],
                             transcript = transcript,
