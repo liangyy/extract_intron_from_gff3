@@ -12,7 +12,7 @@ parser.add_argument('--o_intron_bed', help = '''
 
 args = parser.parse_args()
 
-import gzip
+import gzip, re
 
 # get the number of exons for each transcript
 exon_dic = {}
@@ -25,12 +25,15 @@ with gzip.open(args.i_exon_bed, 'rt') as f:
         start = i[1]
         end = i[2]
         strand = i[5]
+        info = i[-1]
         transcript = exon_id.split(':')[1]
         try:
-           exon_no = int(exon_id.split(':')[2])
+            m = re.search(';exon_number=(.+?);', info)
+            exon_no = int(m.group(1))
+            # exon_no = int(exon_id.split(':')[2])
         except ValueError:
-           print('the exon id is not understandable at {chrm}: {transcript}'.format(chrm = chrm, transcript = transcript))
-           continue
+            print('the exon id is not understandable at {chrm}: {transcript}'.format(chrm = chrm, transcript = transcript))
+            continue
         if transcript not in exon_dic:
             exon_dic[transcript] = {}
             exon_dic[transcript][exon_no] = [chrm, start, end, strand, transcript, exon_no]
